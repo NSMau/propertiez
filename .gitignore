@@ -61,6 +61,7 @@ typings/
 .next
 
 dist
+build
 
 # Files for VS Code REST Client
 *.rest
