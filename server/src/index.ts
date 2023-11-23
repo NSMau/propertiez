@@ -1,27 +1,38 @@
+import { ApolloServer } from 'apollo-server-express'
+import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import express from 'express'
-import bodyParser from "body-parser";
+import http from 'http'
+import typeDefs from './graphql/typeDefs'
+import resolvers from './graphql/resolvers'
+import {DocumentNode} from 'graphql/language'
 
-import listings from './listings'
+async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
+    const app = express()
+    const PORT = 4000
+    const httpServer = http.createServer(app)
+    // The http server handles the request and response cycle made to/from the Express app
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        csrfPrevention: true,
+        cache: 'bounded',
+        plugins: [
+            // Instructs Apollo Server to drain the HTTP server's existing sockets,
+            // enabling graceful shutdown.
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            // Recommended settings to use Apollo Server. For production,
+            // use ApolloServerPluginLandingPageProductionDefault instead.
+            ApolloServerPluginLandingPageLocalDefault({ embed: true })
+        ]
+    })
 
-const app = express()
-const PORT = 3000
+    await server.start()
 
-// Middleware to parse JSON body
-app.use(bodyParser.json())
+    server.applyMiddleware({ app, path: '/api' })
 
-app.get('/listings', (_, res) => res.send(listings))
+    await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve))
 
-// curl -X POST http://localhost:3000/delete-listing -H 'Content-Type: application/json' -d '{"id": "001"}'
-app.post('/delete-listing', (req, res) => {
-    const { id } = req.body
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+}
 
-    for (const listing of listings) {
-        if (listing.id === id) {
-            return res.send(listings.splice(listings.indexOf(listing), 1))
-        }
-    }
-
-    return res.send('Failed to delete listing')
-})
-
-app.listen(PORT, () => console.log(`App listening on http://localhost:${PORT}`))
+startApolloServer(typeDefs, resolvers)

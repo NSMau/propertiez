@@ -12,10 +12,10 @@ interface Listing {
 
 const listings: Listing[] = [
     {
-        id: "001",
-        title: "Title 1",
-        image: "https://via.placeholder.com/150",
-        address: "Address 1",
+        id: '001',
+        title: 'Title 1',
+        image: 'https://via.placeholder.com/150',
+        address: 'Address 1',
         price: 100,
         numOfGuests: 2,
         numOfBeds: 1,
@@ -23,10 +23,10 @@ const listings: Listing[] = [
         rating: 5
     },
     {
-        id: "002",
-        title: "Title 2",
-        image: "https://via.placeholder.com/150",
-        address: "Address 2",
+        id: '002',
+        title: 'Title 2',
+        image: 'https://via.placeholder.com/150',
+        address: 'Address 2',
         price: 200,
         numOfGuests: 3,
         numOfBeds: 2,
@@ -34,10 +34,10 @@ const listings: Listing[] = [
         rating: 4
     },
     {
-        id: "003",
-        title: "Title 3",
-        image: "https://via.placeholder.com/150",
-        address: "Address 3",
+        id: '003',
+        title: 'Title 3',
+        image: 'https://via.placeholder.com/150',
+        address: 'Address 3',
         price: 300,
         numOfGuests: 4,
         numOfBeds: 3,
@@ -45,10 +45,10 @@ const listings: Listing[] = [
         rating: 3
     },
     {
-        id: "004",
-        title: "Title 4",
-        image: "https://via.placeholder.com/150",
-        address: "Address 4",
+        id: '004',
+        title: 'Title 4',
+        image: 'https://via.placeholder.com/150',
+        address: 'Address 4',
         price: 400,
         numOfGuests: 5,
         numOfBeds: 4,
@@ -56,10 +56,10 @@ const listings: Listing[] = [
         rating: 2
     },
     {
-        id: "005",
-        title: "Title 5",
-        image: "https://via.placeholder.com/150",
-        address: "Address 5",
+        id: '005',
+        title: 'Title 5',
+        image: 'https://via.placeholder.com/150',
+        address: 'Address 5',
         price: 500,
         numOfGuests: 6,
         numOfBeds: 5,
