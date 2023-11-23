@@ -1,0 +1,19 @@
+{
+  "name": "propertiez-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Mauricio Paternina",
+    "email": "hi@nsmau.io",
+    "url": "https://nsmau.io"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
