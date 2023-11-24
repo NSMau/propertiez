@@ -1,18 +1,17 @@
 import { MongoClient } from 'mongodb'
 import { Database } from '../lib/types'
 
-const USERNAME: string = 'propertiez-king'
-const PASSWORD: string = '5pLufdQy40CNJ4pg'
-const CLUSTER_ADDRESS: string = 'cluster0.ccgbh1c.mongodb.net'
-const CONNECTION_STRING: string = `mongodb+srv://${USERNAME}:${PASSWORD}@${CLUSTER_ADDRESS}/?retryWrites=true&w=majority`
+const { DB_NAME, DB_COLLECTION, DB_USER, DB_USER_PASSWORD, DB_CLUSTER_ADDRESS } = process.env
+const CONNECTION_STRING: string = `mongodb+srv://${DB_USER}:${DB_USER_PASSWORD}@${DB_CLUSTER_ADDRESS}/?retryWrites=true&w=majority`
 
 async function connectDatabase(): Promise<Database> {
     const client = await MongoClient.connect(CONNECTION_STRING)
 
-    const db = client.db('propertiez_dev')
+    const db = client.db(DB_NAME)
 
     return {
-        listings: db.collection('listings')
+        // @ts-ignore
+        listings: db.collection(DB_COLLECTION)
     }
 }
 
