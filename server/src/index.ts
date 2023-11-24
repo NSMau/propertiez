@@ -11,8 +11,7 @@ import connectDatabase from './database'
 import express from 'express'
 import http from 'http'
 
-import typeDefs from './graphql/typeDefs'
-import resolvers from './graphql/resolvers'
+import { resolvers, typeDefs } from './graphql'
 import { DocumentNode } from 'graphql/language'
 
 async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {

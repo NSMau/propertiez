@@ -5,7 +5,7 @@ import { gql } from 'apollo-server-core'
  * that together define the "shape" of queries that are executed against
  * your data.
  */
-const typeDefs = gql`
+export const typeDefs = gql`
   # This "Listing" type defines the queryable fields for every listing in our data source.
   type Listing {
     id: ID!
@@ -30,5 +30,3 @@ const typeDefs = gql`
     deleteListing(id: ID!): Listing!
   }
 `
-
-export default typeDefs
