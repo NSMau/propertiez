@@ -1,12 +1,18 @@
 import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+
+import connectDatabase from './database';
+
 import express from 'express'
 import http from 'http'
+
 import typeDefs from './graphql/typeDefs'
 import resolvers from './graphql/resolvers'
-import {DocumentNode} from 'graphql/language'
+import { DocumentNode } from 'graphql/language'
 
 async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
+    const db = await connectDatabase()
+
     const app = express()
     const PORT = 4000
     const httpServer = http.createServer(app)
@@ -14,6 +20,7 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
+        context: () => ({ db }),
         csrfPrevention: true,
         cache: 'bounded',
         plugins: [
@@ -33,6 +40,9 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
     await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve))
 
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+
+    const listings = await db.listings.find({}).toArray()
+    console.log(listings)
 }
 
 startApolloServer(typeDefs, resolvers)
