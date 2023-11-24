@@ -1,21 +1,37 @@
-import listings from '../listings'
+import { Database, Listing } from '../lib/types'
+import { ObjectId } from 'mongodb'
 
 const resolvers = {
-    Query: {
-        listings: () => listings
-    },
+  Query: {
+    listings: async (
+      _root: undefined,
+      _args: {},
+      { db }: { db: Database }
+    ): Promise<Listing[]> => await db.listings.find({}).toArray()
+  },
 
-    Mutation: {
-        deleteListing: (_root: undefined, { id }: { id: string }) => {
-            for (const listing of listings) {
-                if (listing.id === id) {
-                    return listings.splice(listings.indexOf(listing), 1)[0]
-                }
-            }
+  Mutation: {
+    deleteListing: async (
+      _root: undefined,
+      { id }: { id: string },
+      { db }: { db: Database }
+    ): Promise<Listing> => {
+      const deletedListing = await db.listings.findOneAndDelete({
+        _id: new ObjectId(id)
+      })
 
-            throw new Error('Failed to delete listing')
-        }
+      if (!deletedListing)
+        throw new Error(
+          `Failed to delete listing with id: ${id}. Check id and try again.`
+        )
+
+      return deletedListing
     }
+  },
+
+  Listing: {
+    id: (listing: Listing) => listing._id.toString()
+  }
 }
 
 export default resolvers
