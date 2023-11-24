@@ -40,9 +40,6 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
     await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve))
 
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-
-    const listings = await db.listings.find({}).toArray()
-    console.log(listings)
 }
 
 startApolloServer(typeDefs, resolvers)
