@@ -8,17 +8,15 @@ import {
 
 import connectDatabase from './database'
 
-import express from 'express'
+import express, { type Application } from 'express'
 import http from 'http'
 
 import { resolvers, typeDefs } from './graphql'
-import { DocumentNode } from 'graphql/language'
 
-async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
+async function startApolloServer(app: Application): Promise<void> {
   const db = await connectDatabase()
 
-  const app = express()
-  const { PORT = 3000 } = process.env
+  const { PORT } = process.env
   const httpServer = http.createServer(app)
   // The http server handles the request and response cycle made to/from the Express app
   const server = new ApolloServer({
@@ -43,14 +41,20 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: {}) {
 
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: PORT }, resolve)
-  )
+  ).catch((error) => {
+    console.error('Failed to start the server:', error)
+    process.exit(1)
+  })
 
   console.log(
     `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
   )
 
-  const listings = await db.listings.find({}).toArray()
-  console.log(listings)
+  // const listings = await db.listings.find({}).toArray()
+  // console.log(listings)
 }
 
-startApolloServer(typeDefs, resolvers)
+startApolloServer(express()).catch((error) => {
+  console.error('Failed to start the server:', error)
+  process.exit(1)
+})
