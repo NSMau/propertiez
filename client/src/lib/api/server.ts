@@ -1,9 +1,12 @@
-interface RequestBody {
-  query: string
+interface RequestBody<TVariables> {
+  query: string  // GraphQL query
+  variables?: TVariables  // Object with variables for the query
 }
 
 export const server = {
-  fetch: async <TData = any>(body: RequestBody) => {
+  fetch: async <TData = any, TVariables = any>(
+    body: RequestBody<TVariables>
+  ) => {
     const response = await fetch('/api/graphql', {
       method: 'POST',
       headers: {
