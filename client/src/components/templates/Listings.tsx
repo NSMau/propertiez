@@ -1,4 +1,5 @@
 import { server } from '../../lib/api'
+import { ListingsData } from '../../lib/types'
 
 interface ListingsProps {
   title: string
@@ -21,7 +22,7 @@ const LISTINGS = `
 
 export default function Listings({ title }: ListingsProps) {
   async function fetchListings () {
-    const { data: listings } = await server.fetch({ query: LISTINGS })
+    const { data: listings } = await server.fetch<ListingsData>({ query: LISTINGS })
     console.log(listings)
   }
 

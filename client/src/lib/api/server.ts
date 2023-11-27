@@ -3,7 +3,7 @@ interface RequestBody {
 }
 
 export const server = {
-  fetch: async (body: RequestBody) => {
+  fetch: async <TData = any>(body: RequestBody) => {
     const response = await fetch('/api/graphql', {
       method: 'POST',
       headers: {
@@ -12,6 +12,6 @@ export const server = {
       body: JSON.stringify(body)
     })
 
-    return response.json()
+    return await response.json() as Promise<{ data: TData }>
   }
 }
